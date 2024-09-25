@@ -1,0 +1,94 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: linear-gradie rgb214, 55, 15; 
+
+}
+#main_container{
+    width: 100vw;
+    height: 100vh;
+    padding: 10px; 
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.to_do{
+    width: 30%;
+    height: 100%;
+    background-color: rgb(223, 215, 215);
+    box-shadow: 0px 10px 15px rgb(161, 23, 23);
+    margin: 50px auto 10px;
+    padding: 20px 30px;
+    border-radius: 20px;
+}
+.title{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+
+}
+.title img{
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    
+}
+.title h4{
+    color: brown;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    text-align: center;
+    font-size: 1.2rem;
+}
+input{
+    padding: 10px;
+    flex: 2;
+    border: none;
+    outline: none;
+    font-weight: 600;
+}
+button{
+    width: 80px;
+    height: 30px;
+    border: none;
+    border-radius: 20px;
+    background-color: rgb(130, 198, 230);
+    cursor: pointer;
+    font-size: 12px;
+}
+button:hover{
+    background-color: rgb(48, 124, 86);
+}
+li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+ul li span{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0;
+    font-size: 22px;
+    text-align: center;
+    color: #131212;
+    border-radius: 50%;
+}
+
+ul li span:hover{
+    background: #745656;
+}
+.delete{
+    background-color: rgb(185, 44, 44);
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+.checked{
+    text-decoration: line-through;
+    color: #745656;
+}
