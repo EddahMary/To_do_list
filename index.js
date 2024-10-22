@@ -1,82 +1,97 @@
 const taskEntry = document.getElementById("task_entry");
 const taskContainer = document.getElementById("task_container");
 
-const arr = [];
+let arr = [];
 
+// Function to add a task
 function addTask() {
-  if (taskEntry.value === "") {
-    alert("Write something");
-    // outputs an alert if input field is submitted empty
-  } else {
-    // creates a html element with the tag li
-    // let li = document.createElement("li");
-    arr.push(taskEntry.value);
-    updatetTaskList();
-
-    // clearing the input field to allow new task entry
-    taskEntry.value = "";
-
-    // Saves data after adding
-    saveData();
-  }
+  // Throws an error if one tries to add an empty task
+    if (taskEntry.value === "") {
+        alert("Write something");
+    } else {
+        arr.push(taskEntry.value);
+        updateTaskList();
+// Clear input field to allow entry of a new task
+        taskEntry.value = ""; 
+        saveData();
+    }
 }
-addTask();
 
-// click function
+
+// Click function for handling edit, delete, and check
 taskContainer.addEventListener("click", function (e) {
-    // checks a task when clicked on(showing its done)
-    if (e.target.tagName == "LI") {
-      e.target.classlist.toggle("checked");
-    }
-    // deletes a parentElement when one clicks on the span(x)
-    else if (e.target.tagName === "SPAN") {
-      const li = e.target.parentElement;
-      // getting array index
-      const index = arr.indexOf(li.innerText.slice(0, -1).trim());
-      if (index > -1) {
-        arr.splice(index, 1);
-      }
+    const li = e.target.closest("li"); // Get the closest li
 
-      // removes the task item in the list
-      updatetTaskList();
-      saveData();
+    // Check the task when the li is clicked
+    if (e.target.tagName === "LI") {
+        li.classList.toggle("checked");
     }
-  },
-  false);
+    // Deletes a task when the delete span is clicked
+    else if (e.target.classList.contains("deleteTask")) {
+        const index = arr.indexOf(li.innerText.slice(0, -1).trim());
+        if (index > -1) {
+            arr.splice(index, 1);
+            updateTaskList(); 
+            saveData();
+        }
+    }
+    // Adding the edit task functionality
+    else if (e.target.tagName === "BUTTON") {
+        const index = arr.indexOf(li.innerText.slice(0, -1).trim());
+        if (index > -1) {
+            const newTask = prompt("Edit task:", arr[index]);
+            if (newTask) {
+                arr[index] = newTask;
+                updateTaskList(); 
+                saveData();
+            }
+        }
+    }
+});
 
-// storing the content of the taskContainer in the localStorage
+// Storing the content of the taskContainer in localStorage
 function saveData() {
-  // console.log(arr);
-  localStorage.setItem("data", JSON.stringify(arr));
-}
-// numbering the tasks in the task list
-function updatetTaskList(){
-  taskContainer.innerHTML = "";
-  arr.forEach((item, index) => {
-    let li = document.createElement("li");
-    // numbering the tasks upon entry
-    li.innerHTML = `${index + 1}. ${item}`;
-    // deletes a task
-    let span = document.createElement("span");
-    span.innerHTML = "\u00d7";
-    span.className = "delete";
-    li.appendChild(span);
-    taskContainer.appendChild(li);
-  });
+    localStorage.setItem("data", JSON.stringify(arr));
 }
 
-// displaying the tasks even if we refresh the browser
-function displayTask() {
-  const data = JSON.parse(localStorage.getItem("data"));
-  if (data && data.length > 0){
-    arr = data;
-    updatetTaskList();
-  } else {
-    const message = document.createElement("message");
-    message.innerHTML = "Empty";
-    taskContainer.appendChild(message);
-  }
-  arr.push(data);
+// Numbering the tasks in the task list
+function updateTaskList() {
+    taskContainer.innerHTML = "";
+    arr.forEach((item, index) => {
+        let li = document.createElement("li");
+        li.innerHTML = `${index + 1}. ${item}`;
+
+        let buttonContainer = document.createElement("div");
+        buttonContainer.className = "buttonContainer";
+
+        // Edit button
+        let editButton = document.createElement("button");
+        editButton.innerHTML = "Edit"; 
+        buttonContainer.appendChild(editButton);
+
+        // Delete task
+        let span = document.createElement("span");
+        span.innerHTML = onclick="\u00d7"; 
+        span.className = "delete";
+        buttonContainer.appendChild(span);
+
+        li.appendChild(buttonContainer);
+        taskContainer.appendChild(li);
+    });
 }
-// calling the displayTask function
+
+// Displaying the tasks even if we refresh the browser by saving to local storage
+function displayTask() {
+    const data = JSON.parse(localStorage.getItem("data"));
+    if (data && data.length > 0) {
+        arr = data;
+        updateTaskList();
+    } else {
+        const message = document.createElement("div");
+        message.innerHTML = "Empty";
+        taskContainer.appendChild(message);
+    }
+}
+
+// Calling the displayTask function
 displayTask();
